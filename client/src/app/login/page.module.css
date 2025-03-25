@@ -1,0 +1,25 @@
+.login-form {
+  margin-top: 10px;
+}
+
+.login-form input {
+  display: block;
+  margin: 10px 0;
+}
+
+.error-label {
+  color: red;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.links {
+  font-size: 14px;
+}
+
+.links a {
+  display: inline-block;
+  margin: 5px 5px 0 0;
+}

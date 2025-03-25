@@ -1,4 +1,4 @@
-const whitelist = ['https://localhost:5000', 'https://localhost:3500'];
+const whitelist = ['http://localhost:5000', 'http://localhost:3500'];
 const corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -7,6 +7,7 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
+  credentials: true,
   optionsSuccessStatus: 200,
 };
 

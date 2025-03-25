@@ -1,7 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const fs = require('fs');
-const https = require('https');
 const corsOptions = require('./config/corsOptions.js');
 const errorHandler = require('./src/middleware/errorHandler.js');
 require('dotenv').config();
@@ -29,15 +27,10 @@ app.all('*', (req, res, next) => {
 
 app.use(errorHandler);
 
-const options = {
-  key: fs.readFileSync('./ssl/server.key'),
-  cert: fs.readFileSync('./ssl/server.cert'),
-};
-
-https.createServer(options, app).listen(port, (error) => {
+app.listen(port, (error) => {
   if (error) {
       const message = error?.message ?? 'Unknown server error';
       res.status(500).json({ message });
   }
-  console.log(`Server is running on https://localhost:${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });

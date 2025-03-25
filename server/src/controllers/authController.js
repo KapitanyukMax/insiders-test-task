@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const { serialize } = require('cookie');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -60,10 +61,20 @@ const login = async (req, res, next) => {
 
     if (error) return res.status(401).json({ error: error.message });
 
+    const {
+      data: { name },
+    } = await supabase.from('users').select('name').eq('id', data.user.id).single();
+
+    res.setHeader('Set-Cookie', serialize('access_token', data.session.access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      path: '/',
+    }));
+
     res.json({
       message: 'Login successful',
-      user: data.user,
-      access_token: data.session.access_token,
+      user: { ...data.user, name },
     });
   } catch (error) {
     next(error);
@@ -72,9 +83,7 @@ const login = async (req, res, next) => {
 
 const profile = async (req, res, next) => {
   try {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const user = req.user;
 
     if (!user) return res.status(401).json({ error: 'Unauthorized' });
 
@@ -96,6 +105,14 @@ const logout = async (req, res, next) => {
     const { error } = await supabase.auth.signOut();
 
     if (error) return res.status(400).json({ error: error.message });
+
+    res.setHeader('Set-Cookie', serialize('token', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict',
+      path: '/',
+      maxAge: 0,
+    }));
 
     res.json({ message: 'Logout successful' });
   } catch (error) {
