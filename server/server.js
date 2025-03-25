@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const fs = require('fs');
+const https = require('https');
 const corsOptions = require('./config/corsOptions.js');
 const errorHandler = require('./src/middleware/errorHandler.js');
 require('dotenv').config();
@@ -11,8 +13,11 @@ app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use('/', require('./src/routes/api/root.js'));
-app.use('/users', require('./src/routes/api/users.js'));
+app.use('/register', require('./src/routes/api/register.js'));
+app.use('/login', require('./src/routes/api/login.js'));
+app.use('/profile', require('./src/routes/api/profile.js'));
+app.use('/logout', require('./src/routes/api/logout.js'));
+app.use('/reset-password', require('./src/routes/api/resetPassword.js'));
 
 app.all('*', (req, res, next) => {
   try {
@@ -24,10 +29,15 @@ app.all('*', (req, res, next) => {
 
 app.use(errorHandler);
 
-app.listen(port, (err) => {
-  if (err) {
-      const message = err?.message ?? 'Unknown server error';
+const options = {
+  key: fs.readFileSync('./ssl/server.key'),
+  cert: fs.readFileSync('./ssl/server.cert'),
+};
+
+https.createServer(options, app).listen(port, (error) => {
+  if (error) {
+      const message = error?.message ?? 'Unknown server error';
       res.status(500).json({ message });
   }
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on https://localhost:${port}`);
 });
