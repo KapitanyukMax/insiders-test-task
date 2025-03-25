@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "lint": "eslint ."
+  },
+  "author": "Max Kapitaniuk",
+  "license": "ISC",
+  "description": "",
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "semi": true,
+    "tabWidth": 2
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "eslint": "^9.23.0",
+    "nodemon": "^3.1.9"
+  }
+}
