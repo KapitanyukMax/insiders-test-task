@@ -1,23 +1,35 @@
-"use client";
-import { useAuth } from "../context/authContext.js";
-import { useRouter } from "next/navigation";
+'use client';
+import { useEffect } from 'react';
+import { useAuth } from '../context/authContext.js';
+import { useRouter } from 'next/navigation';
+import styles from './page.module.css';
 
 export default function ProfilePage() {
   const { user, loading, handleLogout } = useAuth();
   const router = useRouter();
 
-  if (loading) return <p>Loading...</p>;
-  
-  if (!user) {
-    router.push("/login");
-    return null;
+  useEffect(() => {
+    if (!user && !loading) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
+  function handleHomeClick() {
+    router.push('/');
   }
+
+  if (loading) return <p>Loading...</p>;
+
+  if (!user) return null;
 
   return (
     <div>
-      <p>Ім&apos;я: {user.name}</p>
-      <p>Email: {user.email}</p>
-      <button onClick={handleLogout}>Вийти</button>
+      <p className={styles.text}>Ім&apos;я: {user.name}</p>
+      <p className={styles.text}>Email: {user.email}</p>
+      <div className={styles['button-menu-container']}>
+        <button onClick={handleLogout}>Вийти</button>
+        <button onClick={handleHomeClick}>Головна</button>
+      </div>
     </div>
   );
 }

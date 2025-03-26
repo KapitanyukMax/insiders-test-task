@@ -1,0 +1,48 @@
+.login-form {
+  margin-top: 10px;
+}
+
+.login-form input {
+  display: block;
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+.error-label {
+  color: red;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.undisplayed {
+  display: none;
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.links * {
+  display: block;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  border-radius: 8px;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}

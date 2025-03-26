@@ -8,7 +8,6 @@ export const register = async (name, email, password) => {
     credentials: 'include',
   });
 
-  if (!res.ok) throw new Error('Registration failed');
   return res.json();
 };
 
@@ -20,7 +19,6 @@ export const login = async (email, password) => {
     credentials: 'include',
   });
 
-  if (!res.ok) throw new Error('Login failed');
   return res.json();
 };
 
@@ -33,4 +31,14 @@ export const getProfile = async () => {
 
 export const logout = async () => {
   await fetch(`${apiUrl}/logout`, { method: 'POST', credentials: 'include' });
+};
+
+export const resetPassword = async (email) => {
+  const res = await fetch(`${apiUrl}/reset-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+
+  return res.json();
 };
