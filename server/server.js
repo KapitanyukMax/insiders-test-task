@@ -1,4 +1,5 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const corsOptions = require('./config/corsOptions.js');
 const errorHandler = require('./src/middleware/errorHandler.js');
@@ -7,6 +8,7 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3500;
 
+app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -16,6 +18,7 @@ app.use('/login', require('./src/routes/api/login.js'));
 app.use('/profile', require('./src/routes/api/profile.js'));
 app.use('/logout', require('./src/routes/api/logout.js'));
 app.use('/reset-password', require('./src/routes/api/resetPassword.js'));
+app.use('/images-upload', require('./src/routes/api/imagesUpload.js'));
 
 app.all('*', (req, res, next) => {
   try {

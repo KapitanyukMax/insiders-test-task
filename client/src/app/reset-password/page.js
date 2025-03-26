@@ -36,8 +36,8 @@ export default function Login() {
     }
 
     try {
-      const message = await handleResetPassword(email);
-      console.log(message);
+      await handleResetPassword(email);
+      setErrorMessage('');
       modalRef.current?.showModal();
     } catch (error) {
       if (error.message === 'Email not confirmed') {
@@ -50,14 +50,14 @@ export default function Login() {
 
   return (
     <div className={styles['login-page-container']}>
-
       <dialog ref={modalRef} className={styles.modal}>
         <h2>Email з інструкціями надіслано</h2>
         <button onClick={() => router.push('/login')}>Гаразд</button>
       </dialog>
 
-      <h1>Увійдіть</h1>
+      <h1>Скидання пароля</h1>
       <form className={styles['login-form']} onSubmit={handleSubmit}>
+        <p>Введіть адресу, на яку буде надіслано лист з інструкціями</p>
         <label
           className={`${styles['error-label']} ${
             !errorMessage ? styles.undisplayed : ''
@@ -79,7 +79,7 @@ export default function Login() {
           onChange={handleEmailChange}
           required
         />
-        <button type="submit">Увійти</button>
+        <button type="submit">Надіслати</button>
 
         <p className={styles.links}>
           <Link href="/register">Реєстрація</Link>

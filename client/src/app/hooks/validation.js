@@ -2,8 +2,6 @@
 import { useState } from 'react';
 
 const emailRegex = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
-const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-_])[A-Za-z\d_-]{8,}$/;
 
 export function useValidation() {
   const [isEmailValid, setIsEmailValid] = useState(true);
@@ -16,7 +14,7 @@ export function useValidation() {
   };
 
   const revalidatePassword = (password) => {
-    if (passwordRegex.test(password)) {
+    if (password.length >= 8) {
       setIsPasswordValid(true);
     }
   };
@@ -37,7 +35,7 @@ export function useValidation() {
       return false;
     }
 
-    if (!passwordRegex.test(password)) {
+    if (password.length < 8) {
       setIsPasswordValid(false);
       return false;
     }

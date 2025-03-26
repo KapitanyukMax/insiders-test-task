@@ -1,0 +1,95 @@
+.drag-drop-area {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.drag-drop-area.dragging {
+  border-color: #4caf50;
+}
+
+.drag-drop-area label {
+  font-size: 16px;
+  color: #888;
+}
+
+.preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.preview-item {
+  width: 150px;
+  height: 150px;
+  padding: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #f0f0f0;
+  border: 1px solid black;
+  position: relative;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.image-preview {
+  margin-top: 20px;
+}
+
+.remove-button {
+  background-color: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  margin: 0;
+}
+
+.remove-button:hover {
+  background-color: darkred;
+}
+
+.subheading {
+  margin-bottom: 10px;
+}
+
+.modal-menu-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  border-radius: 8px;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  display: hidden;
+}
+
+.modal[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.modal::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}

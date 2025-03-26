@@ -1,5 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
-const { serialize } = require('cookie');
+const { serialize, parse } = require('cookie');
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -37,7 +37,7 @@ const register = async (req, res, next) => {
     res.status(201).json({
       message: 'Register successful',
       user: {
-        ...authData.user,
+        email: authData.user.email,
         name,
       },
     });
@@ -63,18 +63,23 @@ const login = async (req, res, next) => {
 
     const {
       data: { name },
-    } = await supabase.from('users').select('name').eq('id', data.user.id).single();
+    } = await supabase
+      .from('users')
+      .select('name')
+      .eq('id', data.user.id)
+      .single();
 
-    res.setHeader('Set-Cookie', serialize('access_token', data.session.access_token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Strict',
-      path: '/',
-    }));
+    res.setHeader(
+      'Set-Cookie',
+      serialize('access_token', data.session.access_token, {
+        httpOnly: true,
+        path: '/',
+      })
+    );
 
     res.json({
       message: 'Login successful',
-      user: { ...data.user, name },
+      user: { email: data.user.email, name },
     });
   } catch (error) {
     next(error);
@@ -93,7 +98,7 @@ const profile = async (req, res, next) => {
 
     res.json({
       message: 'User retrieved successfully',
-      user: { ...user, name },
+      user: { email: user.email, name },
     });
   } catch (error) {
     next(error);
@@ -106,13 +111,14 @@ const logout = async (req, res, next) => {
 
     if (error) return res.status(400).json({ error: error.message });
 
-    res.setHeader('Set-Cookie', serialize('token', '', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Strict',
-      path: '/',
-      maxAge: 0,
-    }));
+    res.setHeader(
+      'Set-Cookie',
+      serialize('access_token', '', {
+        httpOnly: true,
+        path: '/',
+        maxAge: 0,
+      })
+    );
 
     res.json({ message: 'Logout successful' });
   } catch (error) {
